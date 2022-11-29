@@ -20,6 +20,10 @@
 #define DataMax UINT32_MAX
 #define UNIQUE 100
 
+#define REVERSED 0
+#define NEARLYSORTED 0
+#define FEWUNIQUE 0
+
 void initData(DataType *arr,INDEX num){
 	
 #if REVERSED
