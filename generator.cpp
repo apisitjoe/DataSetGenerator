@@ -43,8 +43,8 @@
 #define RANDSWAPPERCENT 99
 
 #define REVERSED 0
-#define NEARLYSORTED 0
 #define FEWUNIQUE 0
+//NEARLY SORTED AND RANDOM DIST. -> SET REVERSED AND FEW UNIQUE TO 0 THEN DEFINE RANDSWAPPERCENT
 
 void newinitData(DataType *arr, INDEX num){
 	srand(time(NULL));
@@ -83,83 +83,20 @@ void newinitData(DataType *arr, INDEX num){
         		arr[i] = unique[rand()%UNIQUENUM];
    	 		}
 		#endif
-	#else 
+	#else //NEARLYSORTED OR RANDOM
 		#if DOUBLETYPE
+			//DOUBLE TYPE SHOULD BE SORTED BEFORE
 			__gnu_parallel::sort(&arr[0],&arr[num-1],__gnu_parallel::balanced_quicksort_tag());
 		#else
-			
+			//UINT TYPES SHOULD NOT BE SORTED 
 		#endif
+			//RANDOM SWAP TO GENERATE RANDOM OR NEARLYSORTED
 			for(INDEX i=0;i<num*RANDSWAPPERCENT/100;i++){
 				SORT_SWAP(arr[rand()%num], arr[rand()%num]);
 			}
 	#endif
 #endif
 	
-	
-/*
-#if REVERSED
-	for(INDEX i=0;i<num;i++){
-        arr[i] = num-i;
-    }
-	
-#else
-	#if NEARLYSORTED
-	
-	#else
-		#if FEWUNIQUE
-			#if DOUBLETYPE
-	
-			#else 
-				DataType unique[UNIQUE];
-				for(INDEX i=0;i<UNIQUE;i++){
-					unique[i] = rand()%DataMax;
-				}
-		    	for(INDEX i=0;i<num;i++){
-        			arr[i] = unique[rand()%UNIQUE];
-   	 			}
-			#endif
-		#else //Random
-				
-		#endif
-	#endif
-#endif
-	*/
-}
-/*
-void initData(DataType *arr,INDEX num){
-	srand(time(NULL));
-#if REVERSED
-	for(INDEX i=0;i<num;i++){
-        arr[i] = num-i;
-    }
-#else
-	#if NEARLYSORTED
-	
-	for(INDEX i=0;i<num;i++){
-		if(i%7==1||i%7==3||i%7==5)
-			arr[i] = i-rand()%i;
-		else
-        	arr[i] = i;
-    }
-	#else
-		#if FEWUNIQUE
-			DataType unique[UNIQUE];
-			for(INDEX i=0;i<UNIQUE;i++){
-				unique[i] = rand()%DataMax;
-			}
-		    for(INDEX i=0;i<num;i++){
-        		arr[i] = unique[rand()%UNIQUE];
-   	 		}
-		#else
-
-    	for(INDEX i=0;i<num;i++){
-        	arr[i] = rand()%DataMax;
-   	 	}
-   	 	#endif
-    #endif
-#endif
-}
-*/
 int main(){
 	DataType* arr = (DataType*)malloc(sizeof(DataType)*N);
 	//initData(arr,N);
