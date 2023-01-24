@@ -39,7 +39,10 @@
 #define DataMax DBL_MAX
 #endif
 
-#define UNIQUENUM 100
+#define UNIQUEPERCENT 1
+#define RANDFACTOR 4
+
+//#define UNIQUENUM 100
 #define RANDSWAPPERCENT 99
 
 #define REVERSED 0
@@ -90,8 +93,9 @@ void newinitData(DataType *arr, INDEX num){
 		#else
 			//UINT TYPES SHOULD NOT BE SORTED 
 		#endif
-			//RANDOM SWAP TO GENERATE RANDOM OR NEARLYSORTED
-			for(INDEX i=0;i<num*RANDSWAPPERCENT/100;i++){
+			//RANDOM SWAP TO GENERATE RANDOM OR NEARLYSORTED 
+			//for(INDEX i=0;i<num*RANDSWAPPERCENT/100;i++){
+			for(INDEX i=0;i<sqrt(num)*RANDFACTOR;i++){
 				SORT_SWAP(arr[rand()%num], arr[rand()%num]);
 			}
 	#endif
