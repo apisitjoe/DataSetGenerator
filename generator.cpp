@@ -20,13 +20,13 @@
 
 #define SORT_SWAP(x,y) {DataType __SORT_SWAP_t = (x); (x) = (y); (y) = __SORT_SWAP_t;}
 
-#define N 10000
+#define N 20000
 
 #define INDEX uint64_t
 
-#define UINT32TYPE 1
+#define UINT32TYPE 0
 #define UINT64TYPE 0
-#define DOUBLETYPE 0
+#define DOUBLETYPE 1
 
 #if UINT32TYPE
 #define DataType uint32_t
@@ -41,13 +41,13 @@
 
 #define UNIQUEPERCENT 1
 #define RANDFACTOR 4
-
-//#define UNIQUENUM 100
-#define RANDSWAPPERCENT 99
+#define RANDSWAPPERCENT 100
 
 #define REVERSED 0
-#define FEWUNIQUE 0
-//NEARLY SORTED AND RANDOM DIST. -> SET REVERSED AND FEW UNIQUE TO 0 THEN DEFINE RANDSWAPPERCENT
+#define FEWUNIQUE 1
+#define NSORTED 0
+//NEARLY SORTED -> SET REVERSED AND FEW UNIQUE TO 0 and NSORTED to 1 THEN DEFINE RANDFACTOR
+//RANDOM -> SET REVERSED, FEWUNIQUE, NSORTED TO 0 THEN DEFINE RANDSWAPPERCENT
 
 void newinitData(DataType *arr, INDEX num){
 	srand(time(NULL));
@@ -69,23 +69,26 @@ void newinitData(DataType *arr, INDEX num){
 	__gnu_parallel::sort(&arr[0],&arr[num-1],std::greater<DataType>(),__gnu_parallel::balanced_quicksort_tag());
 #else 
 	#if FEWUNIQUE
-		DataType unique[UNIQUENUM];
+		//DataType unique[UNIQUENUM];
+		INDEX uniquenum = UNIQUEPERCENT*num/100;
+		DataType* unique = (DataType*)malloc(sizeof(DataType)*uniquenum);
 		
 		#if DOUBLETYPE
-			for(INDEX i=0;i<UNIQUENUM;i++){
+			for(INDEX i=0;i<uniquenum;i++){
 				unique[i] = rand();
 			}
 			for(INDEX i=0;i<num;i++){
-        		arr[i] = unique[rand()%UNIQUENUM];
+        		arr[i] = unique[rand()%uniquenum];
    	 		}
 		#else 
-			for(INDEX i=0;i<UNIQUENUM;i++){
+			for(INDEX i=0;i<uniquenum;i++){
 				unique[i] = rand()%max;
 			}
 			for(INDEX i=0;i<num;i++){
-        		arr[i] = unique[rand()%UNIQUENUM];
+        		arr[i] = unique[rand()%uniquenum];
    	 		}
 		#endif
+		free(unique);
 	#else //NEARLYSORTED OR RANDOM
 		#if DOUBLETYPE
 			//DOUBLE TYPE SHOULD BE SORTED BEFORE
@@ -93,14 +96,18 @@ void newinitData(DataType *arr, INDEX num){
 		#else
 			//UINT TYPES SHOULD NOT BE SORTED 
 		#endif
-			//RANDOM SWAP TO GENERATE RANDOM OR NEARLYSORTED 
-			//for(INDEX i=0;i<num*RANDSWAPPERCENT/100;i++){
-			for(INDEX i=0;i<sqrt(num)*RANDFACTOR;i++){
+			#if NSORTED
+			for(INDEX i=0;i<(int)sqrt(num)*RANDFACTOR;i++){
 				SORT_SWAP(arr[rand()%num], arr[rand()%num]);
 			}
+			#else
+			for(INDEX i=0;i<num*RANDSWAPPERCENT/100;i++){
+				SORT_SWAP(arr[rand()%num], arr[rand()%num]);
+			}
+			#endif
 	#endif
 #endif
-	
+}
 int main(){
 	DataType* arr = (DataType*)malloc(sizeof(DataType)*N);
 	//initData(arr,N);
