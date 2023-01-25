@@ -20,6 +20,7 @@
 
 #define SORT_SWAP(x,y) {DataType __SORT_SWAP_t = (x); (x) = (y); (y) = __SORT_SWAP_t;}
 
+
 #define N 20000
 
 #define INDEX uint64_t
